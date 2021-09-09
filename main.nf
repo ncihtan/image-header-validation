@@ -6,8 +6,8 @@ params.input = 's3://htan-dcc-ohsu/imaging_level_2/synapse_storage_manifest.csv'
 Channel
   .fromPath(params.input)
   .splitCsv(header: true)
-  .map { file(it.Filename) }
-  .map {file -> tuple(file.simpleName, file) }
+  .map { val(it.Filename) }
+  .map {val -> tuple(val.simpleName, file) }
   .randomSample(10)
   .set { key_ch }
 
