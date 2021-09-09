@@ -21,8 +21,6 @@ process stream_headers{
     file "*"
   script:
   """
-  python $projectDir/stream_headers.py \
-    htan-dcc-ohsu $key \
-    sandbox-developer s3
+  python $projectDir/stream_headers.py htan-dcc-ohsu $key sandbox-developer s3
   """
 }
