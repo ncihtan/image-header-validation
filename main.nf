@@ -23,7 +23,6 @@ process stream_headers{
   """
   python $projectDir/stream_headers.py \
     htan-dcc-ohsu $key \
-    --profile sandbox-developer \
-    --s3_bucket_type s3
+    sandbox-developer s3
   """
 }
