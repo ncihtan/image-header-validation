@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import argparse
 import boto3
 from tifffile import TiffFile
