@@ -15,7 +15,7 @@ process stream_headers{
   //errorStrategy 'ignore'
   conda '/home/ubuntu/anaconda3/envs/auto-minerva-author'
   input:
-    key from key_ch
+    val key from key_ch
   output:
     file "*"
   script:
