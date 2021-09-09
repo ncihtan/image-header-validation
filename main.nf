@@ -13,6 +13,7 @@ Channel
 process stream_headers{
   publishDir "$params.outdir"
   //errorStrategy 'ignore'
+  echo true
   conda '/home/ubuntu/anaconda3/envs/auto-minerva-author'
   input:
     val key from key_ch
