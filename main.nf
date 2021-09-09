@@ -7,7 +7,6 @@ Channel
   .fromPath(params.input)
   .splitCsv(header: true)
   .map { it.Filename }
-  .map {file -> tuple(file(file).simpleName, file) }
   .randomSample(10)
   .set { key_ch }
 
@@ -16,9 +15,9 @@ process stream_headers{
   //errorStrategy 'ignore'
   conda '/home/ubuntu/anaconda3/envs/auto-minerva-author'
   input:
-    set name, key from key_ch
+    key from key_ch
   output:
-    file("${name}.json")
+    file "*"
   script:
   """
   python $projectDir/stream_headers.py \
