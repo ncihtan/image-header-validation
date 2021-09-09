@@ -8,7 +8,7 @@ Channel
   .splitCsv(header: true)
   .map { file(it.Filename) }
   .map {file -> tuple(file.simpleName, file) }
-  .randomSample { 10 }
+  .randomSample(10)
   .set { key_ch }
 
 process stream_headers{
