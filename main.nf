@@ -7,7 +7,7 @@ Channel
   .fromPath(params.input)
   .splitCsv(header: true)
   .map { it.Filename }
-  .map {file -> tuple(file.simpleName, file) }
+  .map {file -> tuple(file(file).simpleName, file) }
   .randomSample(10)
   .set { key_ch }
 
