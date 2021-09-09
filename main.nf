@@ -21,7 +21,7 @@ process stream_headers{
     file("${name}.json")
   script:
   """
-  python stream_headers.py \
+  python $projectDir/stream_headers.py \
     htan-dcc-ohsu $key \
     --profile sandbox-developer \
     --s3_bucket_type s3
