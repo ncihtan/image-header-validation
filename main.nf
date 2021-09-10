@@ -1,14 +1,14 @@
 #!/usr/bin/env nextflow
 
 params.outdir = 'outputs'
-params.bucket = ""
 params.input = 'example_manifest.csv'
+params.bucket = ""
 
 Channel
   .fromPath(params.input)
   .splitCsv(header: true)
-  .map { it.Filename }
-  .map { val ->  tuple(file(val).simpleName, val) }
+  .map { file(it.Filename) }
+  .map { file ->  tuple(file.simpleName, file) }
   .randomSample(10)
   .into { key_ch; view_ch }
 
@@ -20,11 +20,11 @@ process get_headers{
   echo true
   conda '/home/ubuntu/anaconda3/envs/auto-minerva-author'
   input:
-    set name, key from key_ch
+    set name, file(key) from key_ch
   output:
     file "*"
   script:
   """
-  python $projectDir/image-tags2json.py $params.bucket $key > 'tags.json'
+  python $projectDir/image-tags2json.py $key --bucket $bucket > 'tags.json'
   """
 }
