@@ -21,4 +21,4 @@ with TiffFile(args.input) as tif:
         name, value = tag.name, tag.value
         tif_tags[name] = value
 
-json.dump(tif_tags, f)
+json.dump(tif_tags)
