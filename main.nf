@@ -10,7 +10,9 @@ Channel
   .map { it.Filename }
   .randomSample(10)
   .map { file -> tuple(file.simpleName, file)}
-  .set { key_ch }
+  .into { key_ch; view_ch }
+
+view_ch.view()
 
 process get_headers{
   publishDir "$params.outdir", saveAs: {filname -> "${name}.json"}
