@@ -24,13 +24,12 @@ process get_headers{
   output:
     file "*"
   script:
-  if: (params.bucket == false)
+  if( params.bucket == false )
     """
     python $projectDir/image-tags2json.py $key > 'tags.json'
     """
-  else:
+  else
     """
-    python $projectDir/image-tags2json.py "s3://$bucket/$key" > 'tags.json'
-
+    python $projectDir/image-tags2json.py 's3://$bucket/$key' > 'tags.json'
     """
 }
