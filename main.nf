@@ -2,7 +2,7 @@
 
 params.outdir = 'outputs'
 params.bucket = "htan-imaging-example-datasets"
-params.input = 'synapse_storage_manifest.csv'
+params.input = 'example_manifest.csv'
 
 Channel
   .fromPath(params.input)
