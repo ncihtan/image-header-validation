@@ -18,7 +18,8 @@ else {
     .fromPath(params.input)
     .splitCsv(header: true)
     .map { it.Filename }
-    .map { x ->  "s3://$params.bucket/$x"}
+    .map { x -> "s3://$params.bucket/$x"}
+    .map { file(x) }
     .map { file ->  tuple(file.simpleName, file) }
     .randomSample(10)
     .into { key_ch; view_ch }
