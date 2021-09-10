@@ -9,19 +9,20 @@ Channel
   .splitCsv(header: true)
   .map { it.Filename }
   .randomSample(10)
+  .map { file -> tuple(file.simpleName, file)}
   .set { key_ch }
 
-process stream_headers{
-  publishDir "$params.outdir"
+process get_headers{
+  publishDir "$params.outdir", saveAs: {filname -> "${name}.json"}
   //errorStrategy 'ignore'
   echo true
   conda '/home/ubuntu/anaconda3/envs/auto-minerva-author'
   input:
-    val key from key_ch
+    set name, key from key_ch
   output:
     file "*"
   script:
   """
-  python $projectDir/stream_headers.py htan-dcc-ohsu $key
+  python $projectDir/image-tags2json.py $params.bucket $key > 'tags.json'
   """
 }
