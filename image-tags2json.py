@@ -14,7 +14,7 @@ parser.add_argument('input',
 
 args = parser.parse_args()
 
-with TiffFile(s3_file) as tif:
+with TiffFile(args.input) as tif:
     tif_tags = {}
     for pages in tif.pages:
       for tag in pages.tags.values():
