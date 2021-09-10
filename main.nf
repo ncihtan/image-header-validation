@@ -2,7 +2,7 @@
 
 params.outdir = 'outputs'
 params.input = 'example_manifest.csv'
-params.bucket = ""
+params.bucket = false
 
 Channel
   .fromPath(params.input)
@@ -24,6 +24,11 @@ process get_headers{
   output:
     file "*"
   script:
+  if: (params.bucket != false)
+  """
+  python $projectDir/image-tags2json.py "s3://$bucket/$key" > 'tags.json'
+  """
+  else:
   """
   python $projectDir/image-tags2json.py $key > 'tags.json'
   """
