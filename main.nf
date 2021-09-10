@@ -8,7 +8,7 @@ if (params.bucket == false){
   Channel
     .fromPath(params.input)
     .splitCsv(header: true)
-    .map { file(it.Filename) }
+    .map { it.Filename }
     .map { file ->  tuple(file.simpleName, file) }
     .randomSample(10)
     .into { key_ch; view_ch }
@@ -25,8 +25,6 @@ else {
 }
 
 view_ch.view()
-
-
 
 process get_headers{
   publishDir "$params.outdir", saveAs: {filname -> "${name}.json"}
