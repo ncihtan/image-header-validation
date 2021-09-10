@@ -30,7 +30,7 @@ process get_headers{
   publishDir "$params.outdir", saveAs: {filname -> "${name}.json"}
   //errorStrategy 'ignore'
   echo true
-  conda '/home/ubuntu/anaconda3/envs/auto-minerva-author'
+  conda 'tifffile '
   input:
     set name, file(image) from key_ch
   output:
