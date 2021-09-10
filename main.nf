@@ -30,6 +30,6 @@ process get_headers{
     """
   else
     """
-    python $projectDir/image-tags2json.py 's3://$params.bucket/$key' > 'tags.json'
+    python $projectDir/image-tags2json.py 's3:\/\/$params.bucket/$key' > 'tags.json'
     """
 }
