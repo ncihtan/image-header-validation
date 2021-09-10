@@ -7,9 +7,8 @@ params.input = 'example_manifest.csv'
 Channel
   .fromPath(params.input)
   .splitCsv(header: true)
-  .map { it.Filename }
+  .map { path(it.Filename) }
   .randomSample(10)
-  .map { file -> tuple(file.simpleName, file)}
   .into { key_ch; view_ch }
 
 view_ch.view()
