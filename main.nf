@@ -1,7 +1,8 @@
 #!/usr/bin/env nextflow
 
 params.outdir = 'outputs'
-params.input = 's3://htan-dcc-ohsu/imaging_level_2/synapse_storage_manifest.csv'
+params.bucket = "htan-imaging-example-datasets"
+params.input = 'synapse_storage_manifest.csv'
 
 Channel
   .fromPath(params.input)
@@ -21,6 +22,6 @@ process stream_headers{
     file "*"
   script:
   """
-  python $projectDir/stream_headers.py htan-dcc-ohsu $key sandbox-developer s3
+  python $projectDir/stream_headers.py htan-dcc-ohsu $key
   """
 }
