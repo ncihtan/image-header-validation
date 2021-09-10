@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 params.outdir = 'outputs'
-params.bucket = "htan-imaging-example-datasets"
+params.bucket = ""
 params.input = 'example_manifest.csv'
 
 Channel
