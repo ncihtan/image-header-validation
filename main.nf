@@ -4,15 +4,30 @@ params.outdir = 'outputs'
 params.input = 'example_manifest.csv'
 params.bucket = false
 
-Channel
-  .fromPath(params.input)
-  .splitCsv(header: true)
-  .map { file(it.Filename) }
-  .map { file ->  tuple(file.simpleName, file) }
-  .randomSample(10)
-  .into { key_ch; view_ch }
+if (params.bucket == false){
+  Channel
+    .fromPath(params.input)
+    .splitCsv(header: true)
+    .map { file(it.Filename) }
+    .map { file ->  tuple(file.simpleName, file) }
+    .randomSample(10)
+    .into { key_ch; view_ch }
+  }
+else {
+  Channel
+    .fromPath(params.input)
+    .splitCsv(header: true)
+    .map { it.Filenae }
+    .map { x -> println "s3://$bucket/$x"}.
+    .map { file(x) }
+    .map { file ->  tuple(file.simpleName, file) }
+    .randomSample(10)
+    .into { key_ch; view_ch }
+}
 
 view_ch.view()
+
+
 
 process get_headers{
   publishDir "$params.outdir", saveAs: {filname -> "${name}.json"}
@@ -20,16 +35,13 @@ process get_headers{
   echo true
   conda '/home/ubuntu/anaconda3/envs/auto-minerva-author'
   input:
-    set name, file(key) from key_ch
+    set name, file(image) from key_ch
   output:
     file "*"
   script:
-  if( params.bucket == false )
-    """
-    python $projectDir/image-tags2json.py $key > 'tags.json'
-    """
-  else
-    """
-    python $projectDir/image-tags2json.py 's3:\/\/$params.bucket/$key' > 'tags.json'
-    """
+
+  """
+  python $projectDir/image-tags2json.py $image > 'tags.json'
+  """
+
 }
