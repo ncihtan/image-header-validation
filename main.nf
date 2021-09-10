@@ -25,6 +25,6 @@ process get_headers{
     file "*"
   script:
   """
-  python $projectDir/image-tags2json.py $key --bucket $bucket > 'tags.json'
+  python $projectDir/image-tags2json.py $key > 'tags.json'
   """
 }
