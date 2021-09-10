@@ -16,10 +16,10 @@ parser.add_argument('bucket',
 parser.add_argument('key',
                     type=str,
                     help='key for an object in the s3 bucket defined by --bucket. Must be a .ome.tiff file')
-parser.add_argument('profile',
+parser.add_argument('--profile',
                     type=str,
                     help='aws profile to use')
-parser.add_argument('s3_bucket_type',
+parser.add_argument('--s3_bucket_type',
                     type=str,
                     default="s3",
                     help='S3 bucket type, [s3, gs]')
