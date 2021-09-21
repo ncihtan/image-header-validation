@@ -9,6 +9,7 @@ if (params.bucket == false){
     .fromPath(params.input)
     .splitCsv(header: true)
     .map { it.Filename }
+    .map { x -> file(x)}
     .map { file ->  tuple(file.simpleName, file) }
     .randomSample(10)
     .into { key_ch; view_ch }
@@ -30,7 +31,6 @@ process get_headers{
   publishDir "$params.outdir", saveAs: {filname -> "${name}.json"}
   //errorStrategy 'ignore'
   echo true
-  conda 'tifffile '
   input:
     set name, file(image) from key_ch
   output:
