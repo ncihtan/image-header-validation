@@ -8,21 +8,15 @@ import io
 from pathlib import Path
 import os
 import json
+from urllib.parse import urlparse
 
 parser = argparse.ArgumentParser(description = 'Pull image tags from an streaming s3 object')
-parser.add_argument('bucket',
+parser.add_argument('uri',
                     type=str,
                     help='name of a s3 bucket that your profile has access to')
-parser.add_argument('key',
-                    type=str,
-                    help='key for an object in the s3 bucket defined by --bucket. Must be a .ome.tiff file')
 parser.add_argument('--profile',
                     type=str,
                     help='aws profile to use')
-parser.add_argument('--s3_bucket_type',
-                    type=str,
-                    default="s3",
-                    help='S3 bucket type, [s3, gs]')
 
 args = parser.parse_args()
 
@@ -84,25 +78,31 @@ class S3File(io.RawIOBase):
         return True
 
 # Stream the highest level image
+print("Parsing URI: " + args.uri)
+o = urlparse(args.url, allow_fragments=False)
+provider = o.scheme
+bucket = o.netloc
+key = o.path
+
 print("Loading image")
 
-if args.s3_bucket_type == "s3":
+if provider == "s3":
   session = boto3.session.Session(profile_name=args.profile)
   s3 = session.client('s3')
   s3_resource = session.resource('s3')
 
-if args.s3_bucket_type == "gs":
+if provider == "gs":
   print("Accessing GCS resource")
   session = boto3.session.Session(profile_name=args.profile)
   s3_resource = session.resource('s3',endpoint_url = "https://storage.googleapis.com")
 
 print("Getting object")
-s3_obj = s3_resource.Object(bucket_name=args.bucket, key=args.key)
+s3_obj = s3_resource.Object(bucket_name=bucket, key=key)
 print("Creating streaming s3 file")
 s3_file = S3File(s3_obj)
 
-basename = os.path.basename(args.key)
-basename = Path(basename)
+#basename = os.path.basename(args.key)
+basename = Path(key)
 extensions = "".join(basename.suffixes)
 output_path =str(basename).replace(extensions, ".json")
 
